@@ -158,3 +158,5 @@ dykstra_linealDF = function(DF, A, b,
 dykstra_linealDF(DF, A, b, igualdades, I = I)
 dykstra_linealDF(DF, A = A,  b = b, eq = igualdades)
     
+# Try to change bucles in DFs to DataTable options or apply
+# in functions Check_rows and Dykstra_lineal
