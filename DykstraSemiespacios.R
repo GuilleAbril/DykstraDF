@@ -23,7 +23,7 @@ DF = data.frame(col1,col2,col3) #  4 individuos 3 variables
   
 ##### Función que comprueba que filas del DF no cumplen las restricciones
   # devuelve estas solo
-## cosas: estamos suponiendo todo inigualdades, hay que meter la opción para igualdades
+## cosas: estamos suponiendo todo desigualdades, hay que meter la opción para igualdades
 ## opción para hacer esto que el usuario diga a que filas de la matriz A le corresponde una igualdad
 ## y cuales una desigualdad (si es por orden mejor):
 ## Una manera, que nos diga un vector de la misma longitud que b con caracteres de la forma 
@@ -160,3 +160,52 @@ dykstra_linealDF(DF, A = A,  b = b, eq = igualdades)
     
 # Try to change bucles in DFs to DataTable options or apply
 # in functions Check_rows and Dykstra_lineal
+
+
+# first lets proof apply
+
+##### Función que comprueba que filas del DF no cumplen las restricciones
+# devuelve estas solo
+## cosas: estamos suponiendo todo desigualdades, hay que meter la opción para igualdades
+## opción para hacer esto que el usuario diga a que filas de la matriz A le corresponde una igualdad
+## y cuales una desigualdad (si es por orden mejor):
+## Una manera, que nos diga un vector de la misma longitud que b con caracteres de la forma 
+## "==" o "<=" en la posición correspondiente al b_i.
+## por ejemplo para la 1ª y 3ª desigualdades y para la 2ª igualdad sería
+
+## function which check if a vector satisfy the linear restrictions
+## and return this vector if is not the case
+check_vector_lineal = function(x, A, b, eq = '<='){
+  b_prima = A%*%x
+  logical_vect = b <= b_prima
+  if(any(logical_vect == FALSE)){
+    return(x)
+  }
+}
+
+check_rows_lineal = function(df,A,b,eq = rep('<=',length(b))){
+  df_checks = apply(df, 1, check_vector_lineal, A = A, b = b, eq)
+  wrong_rows = data.frame()
+  for (i in 1:length(df[,1])) {
+    xi = df[i,]
+    b_prima = A%*%as.numeric(xi)
+    checks_vec = c()
+    for(k in 1:length(b)){
+      if(eq[k] == "<="){
+        checks_vec[k] = as.vector(b_prima)[k]<=b[k]} else {
+          checks_vec[k] = as.vector(b_prima)[k]==b[k]
+        }
+    }
+    if(any(checks_vec == FALSE)){
+      wrong_rows = rbind(wrong_rows,xi)#data frame con los vectores que no cumplen las restricciones(y su índice original)
+    }
+  }
+  return(wrong_rows)
+}
+
+igualdades = c("<=", '<=', '<=')
+df_wrong_rows = check_rows_lineal(DF,A,b,igualdades)
+igualdades1 = c("<=", '==', '<=')
+df_wrong_rows_eq = check_rows_lineal(DF,A,b,igualdades1)
+# en este caso ninguna fila satisface las restricciones, la 1 primera fila ahora no cumple
+# la segunda igualdad (probar al retailers)
