@@ -1,10 +1,3 @@
-source("C:/Users/Usuario/Desktop/dykstra/ProgramasGuillermo/Projections.R")
-source("C:/Users/Usuario/Desktop/dykstra/ProgramasGuillermo/stopCriteria.R")
-source("C:/Users/Usuario/Desktop/dykstra/ProgramasGuillermo/AdjustLineal.R")
-source("C:/Users/Usuario/Desktop/dykstra/ProgramasGuillermo/AdjustBall.R")
-source("C:/Users/Usuario/Desktop/dykstra/ProgramasGuillermo/AdjustLinealBall.R")
-source("C:/Users/Usuario/Desktop/dykstra/ProgramasGuillermo/AdjustOtherProjection.R")
-
 dykstra_DF = function(DF,
                       typeConstraints = 'list() or c() of characters',# "ball", "lineal" "other"
                       # lo puedo pedir como un vector de caracteres(o una lista)
